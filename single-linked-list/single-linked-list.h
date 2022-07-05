@@ -143,8 +143,10 @@ public:
       SingleLinkedList(const SingleLinkedList& other) {
           assert(size_ == 0u && head_.next_node == nullptr);
           SingleLinkedList temp;
-          for (auto list : other) {
-              temp.PushBack(list);
+          auto it = temp.before_begin();
+          for (const auto& list : other) {
+              temp.InsertAfter(it, list);
+              ++it;
           }
           swap(temp);
       }
@@ -167,15 +169,10 @@ public:
       }
 
       [[nodiscard]] bool IsEmpty() const noexcept {
-          return size_ == 0 ? true : false;
+          return size_ == 0;
       }
 
       void PushFront(const Type& value) {
-          if (head_.next_node == nullptr) {
-              head_.next_node = new Node(value, nullptr);
-              ++size_;
-              return;
-          }
           head_.next_node = new Node(value, head_.next_node);
           ++size_;
       }
@@ -202,6 +199,7 @@ public:
       }
 
       void PopFront() noexcept {
+          assert(size_ != 0 && head_.next_node != nullptr);
           Node* temp = head_.next_node;
           head_.next_node = head_.next_node->next_node;
           delete temp;
@@ -209,6 +207,7 @@ public:
       }
 
       Iterator EraseAfter(ConstIterator pos) noexcept {
+          assert(pos.node_ != nullptr && pos.node_->next_node!= nullptr);
           Node* temp = pos.node_->next_node;
           pos.node_->next_node = pos.node_->next_node->next_node;
           delete temp;
@@ -242,6 +241,9 @@ void swap(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs) noexcept {
 
 template <typename Type>
 bool operator==(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs) {
+    if (lhs.GetSize() != rhs.GetSize()) {
+        return false;
+    }
     return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
@@ -257,7 +259,7 @@ bool operator<(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& 
 
 template <typename Type>
 bool operator<=(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs) {
-    return lhs < rhs || lhs == rhs;
+    return rhs >= lhs;
 }
 
 template <typename Type>
