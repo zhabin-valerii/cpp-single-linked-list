@@ -39,8 +39,10 @@ for (auto elem : non_empty_list1) {
     std::cout << elem << " ";
 }
 ```
- возврат информации о состоянии списка :
+ Возврат информации о состоянии списка :
+ 
  GetSize - текущий размер.
+ 
  IsEmpty - проверка на пустоту.
  ```CPP
 SingleLinkedList<int> non_empty_list{1, 2, 3, 4};
@@ -48,7 +50,9 @@ std::cout << non_empty_list.GetSize() << std::endl;
 std::cout << std::boolalpha << non_empty_list.IsEmpty() << std::endl;
 ```
 PushFront - добавление элемента в начало списка.
+
 PushBack - добавление элемента в конец списка.
+
 PopFront - удаление элемента из начала списка.
 ```CPP
 SingleLinkedList<int> list;
@@ -62,6 +66,7 @@ for (auto elem : list) {
 }
 ```
 InsertAfter - добавление элемента в произвольное место в списке (по итератору).
+
 EraseAfter - удаление элемента в произвольное место в списке (по итератору).
 ```CPP
 SingleLinkedList<int> list;
